@@ -6,6 +6,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.TelegramBotAdapter;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.GetMe;
@@ -18,6 +19,7 @@ import okhttp3.OkHttpClient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.util.StringUtils;
+
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -67,11 +69,11 @@ public class TelegramBotManager {
   /**
    * Send message to client
    * @param chatId client identifier
-   * @param message text to send
+   * @param message text to send 
    */
   public synchronized void sendMessage(long chatId, @NotNull String message) {
     if (bot != null) {
-      bot.execute(new SendMessage(chatId, message));
+      bot.execute(new SendMessage(chatId, message).parseMode(ParseMode.Markdown));
     }
   }
 
