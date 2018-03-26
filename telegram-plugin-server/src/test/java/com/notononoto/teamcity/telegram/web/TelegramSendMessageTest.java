@@ -20,12 +20,12 @@ public class TelegramSendMessageTest {
   @Test
   public void TelegramSendMessageTest() throws IOException {
     TelegramSettingsBean bean = new TelegramSettingsBean(new TelegramSettings());
-    bean.setBotToken("472427726:AAEf2rUEIcJhI_enklkEmE0W2jK7oTSgMrY");
+    bean.setBotToken("123123");
     bean.setPaused(false);
     bean.setUseProxy(false);
 
     TelegramSettings settings = bean.toSettings();
-    assertEquals("472427726:AAEf2rUEIcJhI_enklkEmE0W2jK7oTSgMrY", settings.getBotToken());
+    assertEquals("123123", settings.getBotToken());
     assertFalse(settings.isPaused());
     assertFalse(settings.isUseProxy());
 
@@ -34,7 +34,7 @@ public class TelegramSendMessageTest {
 
     final String fire = new String(Character.toChars(0x1F525));
     final String front_facing_baby_chick = new String(Character.toChars(0x1F425));
-    bot.sendMessage(132713020, fire + " Hello *Hello* [GitHub](http://tfs.argusnet.net:8080/viewType.html?buildTypeId=Integral_IntegralSetup_IntegralSetupInternalRelease)" + front_facing_baby_chick);
+    bot.sendMessage(132123, fire + " Hello *Hello* " + front_facing_baby_chick);
 
   }
 
@@ -54,12 +54,12 @@ public class TelegramSendMessageTest {
   @Test
   public void TelegramSendMessageFromFileTest() throws IOException {
     TelegramSettingsBean bean = new TelegramSettingsBean(new TelegramSettings());
-    bean.setBotToken("472427726:AAEf2rUEIcJhI_enklkEmE0W2jK7oTSgMrY");
+    bean.setBotToken("123123");
     bean.setPaused(false);
     bean.setUseProxy(false);
 
     TelegramSettings settings = bean.toSettings();
-    assertEquals("472427726:AAEf2rUEIcJhI_enklkEmE0W2jK7oTSgMrY", settings.getBotToken());
+    assertEquals("123123", settings.getBotToken());
     assertFalse(settings.isPaused());
     assertFalse(settings.isUseProxy());
 
@@ -67,10 +67,7 @@ public class TelegramSendMessageTest {
     bot.reloadIfNeeded(settings);
 
 
-    bot.sendMessage(132713020, textFile("file.txt") );
+    bot.sendMessage(123123, textFile("file.txt") );
 
   }
 }
-
-//57269270 Kostya
-//132713020 Lesha
