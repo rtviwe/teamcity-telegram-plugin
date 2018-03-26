@@ -21,9 +21,12 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.util.StringUtils;
 
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -71,9 +74,11 @@ public class TelegramBotManager {
    * @param chatId client identifier
    * @param message text to send 
    */
-  public synchronized void sendMessage(long chatId, @NotNull String message) {
+
+  public synchronized void sendMessage(long chatId, @NotNull String message) throws IOException {
     if (bot != null) {
-      bot.execute(new SendMessage(chatId, message).parseMode(ParseMode.Markdown));
+
+      bot.execute(new SendMessage(chatId, convertText(message)).parseMode(ParseMode.Markdown));
     }
   }
 
@@ -133,4 +138,20 @@ public class TelegramBotManager {
       return UpdatesListener.CONFIRMED_UPDATES_ALL;
     });
   }
+
+  @NotNull
+  private String convertText(String text) throws IOException {
+    StringBuffer sb = new StringBuffer();
+    Pattern p = Pattern.compile("(\\w[0x])([\\da-f]{4,5})", Pattern.CASE_INSENSITIVE );
+    Matcher m = p.matcher(text);
+
+    while(m.find()) {
+      int hex = Integer.parseInt(m.group(2), 16);
+      String s = new String(Character.toChars(hex));
+      m.appendReplacement(sb, s);
+    }
+    m.appendTail(sb);
+    return sb.toString();
+  }
+
 }
