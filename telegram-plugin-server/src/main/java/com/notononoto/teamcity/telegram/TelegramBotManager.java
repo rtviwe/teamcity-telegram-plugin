@@ -75,7 +75,7 @@ public class TelegramBotManager {
    * @param message text to send 
    */
 
-  public synchronized void sendMessage(long chatId, @NotNull String message) throws IOException {
+  public synchronized void sendMessage(String chatId, @NotNull String message) throws IOException {
     if (bot != null) {
 
       bot.execute(new SendMessage(chatId, convertText(message)).parseMode(ParseMode.Markdown));

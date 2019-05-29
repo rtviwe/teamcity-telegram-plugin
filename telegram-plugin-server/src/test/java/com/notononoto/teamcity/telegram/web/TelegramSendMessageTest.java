@@ -34,7 +34,7 @@ public class TelegramSendMessageTest {
 
     final String fire = new String(Character.toChars(0x1F525));
     final String front_facing_baby_chick = new String(Character.toChars(0x1F425));
-    bot.sendMessage(132123, fire + " Hello *Hello* " + front_facing_baby_chick);
+    bot.sendMessage("132123", fire + " Hello *Hello* " + front_facing_baby_chick);
 
   }
 
@@ -67,7 +67,7 @@ public class TelegramSendMessageTest {
     bot.reloadIfNeeded(settings);
 
 
-    bot.sendMessage(123123, textFile("file.txt") );
+    bot.sendMessage("123123", textFile("file.txt") );
 
   }
 }

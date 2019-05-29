@@ -306,15 +306,13 @@ public class TelegramNotificator extends NotificatorAdapter {
    * @param users telegram users
    * @return users ids without duplicates
    */
-  private List<Long> collectChatIds(@NotNull Set<SUser> users) {
+  private List<String> collectChatIds(@NotNull Set<SUser> users) {
     return users.stream()
         .map(user -> user.getPropertyValue(TELEGRAM_PROP_KEY))
         .filter(Objects::nonNull)
         // looks like new Teamcity don't validate input with validator in user properties
         // so we should check input before send (TW-47469). It's fixed at bugtrack but looks like
         // it's still reproducing...
-        .filter(TelegramNotificator::isLong)
-        .map(Long::parseLong)
         .distinct()
         .collect(Collectors.toList());
   }
