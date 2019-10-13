@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Objects;
@@ -78,7 +79,10 @@ public class TelegramBotManager {
   public synchronized void sendMessage(String chatId, @NotNull String message) throws IOException {
     if (bot != null) {
 
-      bot.execute(new SendMessage(chatId, convertText(message)).parseMode(ParseMode.Markdown));
+      String[] messages = message.split("(?<=\\G.{4096})");
+      for (String m : messages) {
+        bot.execute(new SendMessage(chatId, convertText(m)).parseMode(ParseMode.Markdown));
+      }
     }
   }
 
