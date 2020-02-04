@@ -140,7 +140,8 @@ public class TelegramBotManager {
               protected PasswordAuthentication getPasswordAuthentication() {
                 if (getRequestingHost().equalsIgnoreCase(settings.getProxyServer())) {
                   if (settings.getProxyPort() == getRequestingPort()) {
-                    return new PasswordAuthentication(settings.getProxyUsername(), settings.getProxyPassword().toCharArray());
+                    return new PasswordAuthentication(settings.getProxyUsername(),
+                        settings.getProxyPassword().toCharArray());
                   }
                 }
                 return null;
@@ -156,9 +157,10 @@ public class TelegramBotManager {
     return createBot(settings, builder);
   }
 
-  private void addProxyToOkHttp(@NotNull TelegramSettings settings, OkHttpClient.Builder builder, Proxy.Type socks) {
+  private void addProxyToOkHttp(@NotNull TelegramSettings settings,
+                                OkHttpClient.Builder builder, Proxy.Type proxyType) {
     builder.proxy(new Proxy(
-        socks, new InetSocketAddress(settings.getProxyServer(), settings.getProxyPort())));
+        proxyType, new InetSocketAddress(settings.getProxyServer(), settings.getProxyPort())));
   }
 
   @NotNull
