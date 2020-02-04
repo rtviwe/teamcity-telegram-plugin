@@ -13,7 +13,7 @@
     <dependency>
       <groupId>com.github.pengrad</groupId>
       <artifactId>java-telegram-bot-api</artifactId>
-      <version>3.0.1</version>
+      <version>4.5.0</version>
     </dependency>
 
     <dependency>

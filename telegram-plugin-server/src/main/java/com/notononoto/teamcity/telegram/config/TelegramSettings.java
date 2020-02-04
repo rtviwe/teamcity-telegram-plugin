@@ -1,5 +1,6 @@
 package com.notononoto.teamcity.telegram.config;
 
+import java.net.Proxy;
 import java.util.Objects;
 
 
@@ -10,6 +11,7 @@ public class TelegramSettings {
   /** Bot state */
   private boolean paused;
   private boolean useProxy;
+  private Proxy.Type proxyType;
   private String proxyServer;
   private Integer proxyPort;
   private String proxyUsername;
@@ -22,6 +24,7 @@ public class TelegramSettings {
     botToken = settings.getBotToken();
     paused = settings.isPaused();
     useProxy = settings.isUseProxy();
+    proxyType = settings.getProxyType();
     proxyServer = settings.getProxyServer();
     proxyPort = settings.getProxyPort();
     proxyUsername = settings.getProxyUsername();
@@ -42,6 +45,14 @@ public class TelegramSettings {
 
   public void setUseProxy(boolean useProxy) {
     this.useProxy = useProxy;
+  }
+
+  public Proxy.Type getProxyType() {
+    return proxyType;
+  }
+
+  public void setProxyType(Proxy.Type proxyType) {
+    this.proxyType = proxyType;
   }
 
   public String getProxyServer() {
@@ -91,6 +102,7 @@ public class TelegramSettings {
     TelegramSettings that = (TelegramSettings) o;
     return useProxy == that.useProxy &&
             paused == that.paused &&
+            proxyType == that.proxyType &&
             Objects.equals(botToken, that.botToken) &&
             Objects.equals(proxyServer, that.proxyServer) &&
             Objects.equals(proxyPort, that.proxyPort) &&
@@ -100,7 +112,7 @@ public class TelegramSettings {
 
   @Override
   public int hashCode() {
-    return Objects.hash(botToken, useProxy, proxyServer, proxyPort,
+    return Objects.hash(botToken, useProxy, proxyType, proxyServer, proxyPort,
             proxyUsername, proxyPassword, paused);
   }
 }

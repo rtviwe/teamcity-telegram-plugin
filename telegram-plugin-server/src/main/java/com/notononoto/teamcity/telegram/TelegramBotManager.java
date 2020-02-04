@@ -3,12 +3,11 @@ package com.notononoto.teamcity.telegram;
 import com.intellij.openapi.diagnostic.Logger;
 import com.notononoto.teamcity.telegram.config.TelegramSettings;
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.TelegramBotAdapter;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.GetMe;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.GetMeResponse;
@@ -20,10 +19,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.util.StringUtils;
 
-
 import java.io.IOException;
-import java.lang.reflect.Array;
+import java.net.Authenticator;
 import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -45,13 +44,18 @@ public class TelegramBotManager {
 
   private static final Logger LOG = Loggers.SERVER;
 
-  /** Plugin settings */
+  /**
+   * Plugin settings
+   */
   private TelegramSettings settings;
-  /** Request executor */
+  /**
+   * Request executor
+   */
   private volatile TelegramBot bot;
 
   /**
    * Reload bot if settings changed
+   *
    * @param newSettings updated user settings
    */
   public synchronized void reloadIfNeeded(@NotNull TelegramSettings newSettings) {
@@ -60,7 +64,7 @@ public class TelegramBotManager {
       return;
     }
     LOG.debug("New telegram bot token is received: " +
-            StringUtil.truncateStringValueWithDotsAtEnd(newSettings.getBotToken(), 6));
+        StringUtil.truncateStringValueWithDotsAtEnd(newSettings.getBotToken(), 6));
     this.settings = newSettings;
     cleanupBot();
     if (settings.getBotToken() != null && !settings.isPaused()) {
@@ -72,8 +76,9 @@ public class TelegramBotManager {
 
   /**
    * Send message to client
-   * @param chatId client identifier
-   * @param message text to send 
+   *
+   * @param chatId  client identifier
+   * @param message text to send
    */
 
   public synchronized void sendMessage(String chatId, @NotNull String message) throws IOException {
@@ -112,25 +117,58 @@ public class TelegramBotManager {
   private TelegramBot createBot(@NotNull TelegramSettings settings) {
     OkHttpClient.Builder builder = new OkHttpClient.Builder();
     if (settings.isUseProxy()) {
-      builder.proxy(new Proxy(Proxy.Type.HTTP,
-          new InetSocketAddress(settings.getProxyServer(), settings.getProxyPort())));
-      if (!StringUtils.isEmpty(settings.getProxyUsername()) &&
-          !StringUtils.isEmpty(settings.getProxyPassword())) {
-        builder.proxyAuthenticator((route, response) -> {
-          String credential =
-              Credentials.basic(settings.getProxyUsername(), settings.getProxyPassword());
-          return response.request().newBuilder()
-              .header("Proxy-Authorization", credential)
-              .build();
-        });
+      boolean credentialsAreNotEmpty = !StringUtils.isEmpty(settings.getProxyUsername()) &&
+          !StringUtils.isEmpty(settings.getProxyPassword());
+      switch (settings.getProxyType()) {
+        case HTTP:
+          addProxyToOkHttp(settings, builder, Proxy.Type.HTTP);
+          if (credentialsAreNotEmpty) {
+            builder.proxyAuthenticator((route, response) -> {
+              String credential =
+                  Credentials.basic(settings.getProxyUsername(), settings.getProxyPassword());
+              return response.request().newBuilder()
+                  .header("Proxy-Authorization", credential)
+                  .build();
+            });
+          }
+          break;
+        case SOCKS:
+          addProxyToOkHttp(settings, builder, Proxy.Type.SOCKS);
+          if (credentialsAreNotEmpty) {
+            Authenticator.setDefault(new Authenticator() {
+              @Override
+              protected PasswordAuthentication getPasswordAuthentication() {
+                if (getRequestingHost().equalsIgnoreCase(settings.getProxyServer())) {
+                  if (settings.getProxyPort() == getRequestingPort()) {
+                    return new PasswordAuthentication(settings.getProxyUsername(), settings.getProxyPassword().toCharArray());
+                  }
+                }
+                return null;
+              }
+            });
+          }
+          break;
+        case DIRECT:
+        default:
+          break;
       }
     }
-    return TelegramBotAdapter.buildCustom(settings.getBotToken(), builder.build());
+    return createBot(settings, builder);
+  }
+
+  private void addProxyToOkHttp(@NotNull TelegramSettings settings, OkHttpClient.Builder builder, Proxy.Type socks) {
+    builder.proxy(new Proxy(
+        socks, new InetSocketAddress(settings.getProxyServer(), settings.getProxyPort())));
+  }
+
+  @NotNull
+  private TelegramBot createBot(@NotNull TelegramSettings settings, OkHttpClient.Builder builder) {
+    return new TelegramBot.Builder(settings.getBotToken()).okHttpClient(builder.build()).build();
   }
 
   private void addUpdatesListener(TelegramBot bot) {
     bot.setUpdatesListener(updates -> {
-      for (Update update: updates) {
+      for (Update update : updates) {
         Message message = update.message();
         Long chatId = message.chat().id();
         SendMessage msg = new SendMessage(chatId,
@@ -146,10 +184,10 @@ public class TelegramBotManager {
   @NotNull
   private String convertText(String text) throws IOException {
     StringBuffer sb = new StringBuffer();
-    Pattern p = Pattern.compile("(\\w[0x])([\\da-f]{4,5})", Pattern.CASE_INSENSITIVE );
+    Pattern p = Pattern.compile("(\\w[0x])([\\da-f]{4,5})", Pattern.CASE_INSENSITIVE);
     Matcher m = p.matcher(text);
 
-    while(m.find()) {
+    while (m.find()) {
       int hex = Integer.parseInt(m.group(2), 16);
       String s = new String(Character.toChars(hex));
       m.appendReplacement(sb, s);

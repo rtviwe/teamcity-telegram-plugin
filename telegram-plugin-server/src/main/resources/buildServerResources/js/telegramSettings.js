@@ -37,6 +37,10 @@ Telegram.SettingsForm = OO.extend(BS.AbstractPasswordForm, {
                 $("errorBotToken").innerHTML = elem.firstChild.nodeValue;
                 that.highlightErrorField($("botToken"));
             },
+            onEmptyProxyTypeError: function(elem) {
+                $("errorProxyType").innerHTML = elem.firstChild.nodeValue;
+                that.highlightErrorField($("proxyType"));
+            },
             onEmptyProxyServerError: function(elem) {
                 $("errorProxyServer").innerHTML = elem.firstChild.nodeValue;
                 that.highlightErrorField($("proxyServer"));
