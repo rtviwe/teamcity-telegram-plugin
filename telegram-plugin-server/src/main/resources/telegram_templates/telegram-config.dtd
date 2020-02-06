@@ -3,6 +3,7 @@
   bot-token CDATA #REQUIRED
   paused CDATA #REQUIRED
   use-proxy CDATA #REQUIRED
+  proxy-type CDATA #REQUIRED
   proxy-server CDATA #REQUIRED
   proxy-port CDATA #REQUIRED
   proxy-username CDATA #REQUIRED

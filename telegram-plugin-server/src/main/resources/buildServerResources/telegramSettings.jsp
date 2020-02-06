@@ -1,6 +1,7 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib prefix="admin" tagdir="/WEB-INF/tags/admin" %>
 <%@ taglib prefix="forms" tagdir="/WEB-INF/tags/forms" %>
+<%@ taglib prefix="props" tagdir="/WEB-INF/tags/props" %>
 
 <jsp:useBean id="telegramSettings"
              scope="request"
@@ -8,11 +9,11 @@
 <bs:linkCSS dynamic="${true}">
     /css/admin/adminMain.css
     /css/admin/serverConfig.css
-    /plugins/telegram-plugin/css/telegramSettings.css
+    /plugins/telegram-plugin-notifier/css/telegramSettings.css
 </bs:linkCSS>
 <bs:linkScript>
     /js/bs/testConnection.js
-    /plugins/telegram-plugin/js/telegramSettings.js
+    /plugins/telegram-plugin-notifier/js/telegramSettings.js
 </bs:linkScript>
 <script type="text/javascript">
     $j(function() {
@@ -58,26 +59,40 @@
                     <td><forms:checkbox name="useProxy" checked="${telegramSettings.useProxy}"/>
                 </tr>
                 <tr>
+                    <th><label for="proxyType">Proxy type: </label></th>
+                    <td>
+                        <forms:radioButton name="proxyType" id="proxyTypeHttp" checked="${telegramSettings.proxyType == 'HTTP'}"
+                                           value="HTTP" title="HTTP"/>
+                        <label for="proxyTypeHttp">HTTP</label>
+                        <forms:radioButton name="proxyType" id="proxyTypeSocks" checked="${telegramSettings.proxyType == 'SOCKS'}"
+                                           value="SOCKS" title="SOCKS"/>
+                        <label for="proxyTypeSocks">SOCKS</label>
+                        <span class="smallNote">If proxy is enabled, Basic HTTP/FTP or SOCKS (V4/V5) proxy.</span>
+                        <span class="error" id="errorProxyType"></span>
+                    </td>
+                </tr>
+                <tr>
                     <th><label for="proxyServer">Server: </label></th>
                     <td>
-                        <forms:textField name="proxyServer" value="${telegramSettings.proxyServer}"/>
-                        <span class="smallNote">Optional. Provide if proxy enabled.</span>
+                        <forms:textField name="proxyServer"
+                                         value="${telegramSettings.proxyServer}"/>
                         <span class="error" id="errorProxyServer"></span>
                     </td>
                 </tr>
                 <tr>
                     <th><label for="proxyPort">Port: </label></th>
                     <td>
-                        <forms:textField name="proxyPort" value="${telegramSettings.proxyPort}"/>
-                        <span class="smallNote">Optional. Provide if proxy enabled.</span>
+                        <forms:textField name="proxyPort"
+                                         value="${telegramSettings.proxyPort}"/>
                         <span class="error" id="errorProxyPort"></span>
                     </td>
                 </tr>
                 <tr>
                     <th><label for="proxyUsername">Username: </label></th>
                     <td>
-                        <forms:textField name="proxyUsername" value="${telegramSettings.proxyUsername}"/>
-                        <span class="smallNote">Optional. Provide if proxy enabled and requires authentication.</span>
+                        <forms:textField name="proxyUsername"
+                                         value="${telegramSettings.proxyUsername}"/>
+                        <span class="smallNote">Optional. Provide if proxy requires authentication.</span>
                     </td>
                 </tr>
                 <tr>
@@ -85,7 +100,7 @@
                     <td>
                         <forms:passwordField name="proxyPassword"
                                              encryptedPassword="${telegramSettings.encryptedProxyPassword}"/>
-                        <span class="smallNote">Optional. Provide if proxy enabled and requires authentication.</span>
+                        <span class="smallNote">Optional. Provide if proxy requires authentication.</span>
                     </td>
                 </tr>
                 <tr class="noBorder">

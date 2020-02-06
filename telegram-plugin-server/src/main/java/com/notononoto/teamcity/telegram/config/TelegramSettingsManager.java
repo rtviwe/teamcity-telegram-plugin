@@ -17,6 +17,7 @@ import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.Proxy;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,6 +33,7 @@ public class TelegramSettingsManager implements ChangeListener {
   private static final String PAUSE_ATTR = "paused";
 
   private static final String USE_PROXY_ATTR = "use-proxy";
+  private static final String PROXY_TYPE = "proxy-type";
   private static final String PROXY_SERVER_ATTR = "proxy-server";
   private static final String PROXY_PORT_ATTR = "proxy-port";
   private static final String PROXY_USERNAME_ATTR = "proxy-username";
@@ -97,6 +99,7 @@ public class TelegramSettingsManager implements ChangeListener {
           root.setAttribute(BOT_TOKEN_ATTR, scramble(newSettings.getBotToken()));
           root.setAttribute(PAUSE_ATTR, Boolean.toString(newSettings.isPaused()));
           root.setAttribute(USE_PROXY_ATTR, Boolean.toString(newSettings.isUseProxy()));
+          root.setAttribute(PROXY_TYPE, newSettings.getProxyType().toString());
           root.setAttribute(PROXY_SERVER_ATTR, newSettings.getProxyServer());
           root.setAttribute(PROXY_PORT_ATTR, storeInteger(newSettings.getProxyPort()));
           root.setAttribute(PROXY_USERNAME_ATTR, newSettings.getProxyUsername());
@@ -116,6 +119,7 @@ public class TelegramSettingsManager implements ChangeListener {
     newSettings.setBotToken(unscramble(root.getAttributeValue(BOT_TOKEN_ATTR)));
     newSettings.setPaused(Boolean.parseBoolean(root.getAttributeValue(PAUSE_ATTR)));
     newSettings.setUseProxy(Boolean.parseBoolean(root.getAttributeValue(USE_PROXY_ATTR)));
+    newSettings.setProxyType(Proxy.Type.valueOf(root.getAttributeValue(PROXY_TYPE)));
     newSettings.setProxyServer(root.getAttributeValue(PROXY_SERVER_ATTR));
     newSettings.setProxyPort(restoreInteger(root.getAttributeValue(PROXY_PORT_ATTR)));
     newSettings.setProxyUsername(root.getAttributeValue(PROXY_PASSWORD_ATTR));

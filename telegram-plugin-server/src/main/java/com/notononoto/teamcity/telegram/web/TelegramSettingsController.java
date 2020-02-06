@@ -120,6 +120,9 @@ public class TelegramSettingsController extends BaseFormXmlController {
       if (StringUtils.isEmpty(settings.getProxyServer())) {
         errors.addError("emptyProxyServer", "Proxy server must not be empty");
       }
+      if (StringUtils.isEmpty(settings.getProxyType())) {
+        errors.addError("emptyProxyType", "Proxy type must be selected");
+      }
       if (StringUtils.isEmpty(settings.getProxyPort())) {
         errors.addError("emptyProxyPort", "Proxy port must not be empty");
       }
