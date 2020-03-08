@@ -119,7 +119,7 @@ public class TelegramSettingsManager implements ChangeListener {
     newSettings.setBotToken(unscramble(root.getAttributeValue(BOT_TOKEN_ATTR)));
     newSettings.setPaused(Boolean.parseBoolean(root.getAttributeValue(PAUSE_ATTR)));
     newSettings.setUseProxy(Boolean.parseBoolean(root.getAttributeValue(USE_PROXY_ATTR)));
-    newSettings.setProxyType(Proxy.Type.valueOf(root.getAttributeValue(PROXY_TYPE)));
+    newSettings.setProxyType(Proxy.Type.valueOf(root.getAttributeValue(PROXY_TYPE,"HTTP")));
     newSettings.setProxyServer(root.getAttributeValue(PROXY_SERVER_ATTR));
     newSettings.setProxyPort(restoreInteger(root.getAttributeValue(PROXY_PORT_ATTR)));
     newSettings.setProxyUsername(root.getAttributeValue(PROXY_PASSWORD_ATTR));
