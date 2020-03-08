@@ -10,7 +10,7 @@
   <packaging>pom</packaging>
   <properties>
       <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-      <teamcity.telegram-plugin.plugin.version>${version}-snapshot-${maven.build.timestamp}</teamcity.telegram-plugin.plugin.version>
+      <teamcity.telegram-plugin.plugin.version>${version}</teamcity.telegram-plugin.plugin.version>
       <teamcity.telegram-plugin.plugin.vendorName>ItgLvb</teamcity.telegram-plugin.plugin.vendorName>
       <teamcity.telegram-plugin.plugin.vendorUrl>https://github.com/ItgLvb/teamcity-telegram-plugin</teamcity.telegram-plugin.plugin.vendorUrl>
   </properties>

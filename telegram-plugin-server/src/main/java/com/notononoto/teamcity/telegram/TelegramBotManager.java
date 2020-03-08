@@ -86,7 +86,7 @@ public class TelegramBotManager {
 
       String[] messages = message.split("(?<=\\G.{4096})");
       for (String m : messages) {
-        bot.execute(new SendMessage(chatId, convertText(m)).parseMode(ParseMode.Markdown));
+        bot.execute(new SendMessage(chatId, convertText(m)).parseMode(ParseMode.HTML).disableWebPagePreview(true));
       }
     }
   }
