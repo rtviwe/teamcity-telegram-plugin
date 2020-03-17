@@ -122,7 +122,7 @@ public class TelegramSettingsManager implements ChangeListener {
     newSettings.setProxyType(Proxy.Type.valueOf(root.getAttributeValue(PROXY_TYPE,"HTTP")));
     newSettings.setProxyServer(root.getAttributeValue(PROXY_SERVER_ATTR));
     newSettings.setProxyPort(restoreInteger(root.getAttributeValue(PROXY_PORT_ATTR)));
-    newSettings.setProxyUsername(root.getAttributeValue(PROXY_PASSWORD_ATTR));
+    newSettings.setProxyUsername(root.getAttributeValue(PROXY_USERNAME_ATTR));
     newSettings.setProxyPassword(unscramble(root.getAttributeValue(PROXY_PASSWORD_ATTR)));
 
     settings = newSettings;
