@@ -81,7 +81,7 @@ public class TelegramBotManager {
    * @param message text to send
    */
 
-  public synchronized void sendMessage(String chatId, @NotNull String message) throws IOException {
+  public synchronized void sendMessage(String chatId, @NotNull String message) {
     if (bot != null) {
 
       String[] messages = message.split("(?<=\\G.{4096})");
@@ -184,9 +184,9 @@ public class TelegramBotManager {
   }
 
   @NotNull
-  private String convertText(String text) throws IOException {
+  private String convertText(String text) {
     StringBuffer sb = new StringBuffer();
-    Pattern p = Pattern.compile("(\\w[0x])([\\da-f]{4,5})", Pattern.CASE_INSENSITIVE);
+    Pattern p = Pattern.compile("(0x)([\\da-f]{4,5})", Pattern.CASE_INSENSITIVE);
     Matcher m = p.matcher(text);
 
     while (m.find()) {
