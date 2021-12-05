@@ -6,10 +6,10 @@
     <display-name>telegram plugin notifier</display-name>
     <version>@Version@</version>
     <description>Telegram notification plugin for Teamcity</description>
-    <email>dima190386@rambler.ru</email>
+    <email>rtviwe@gmail.com</email>
     <vendor>
-      <name>ItgLvb</name>
-      <url>https://github.com/ItgLvb/teamcity-telegram-plugin</url>
+      <name>rtviwe</name>
+      <url>https://github.com/rtviwe/teamcity-telegram-plugin</url>
     </vendor>
   </info>
   <deployment use-separate-classloader="true" />

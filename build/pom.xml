@@ -11,8 +11,8 @@
   <properties>
       <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
       <teamcity.telegram-plugin.plugin.version>${version}</teamcity.telegram-plugin.plugin.version>
-      <teamcity.telegram-plugin.plugin.vendorName>ItgLvb</teamcity.telegram-plugin.plugin.vendorName>
-      <teamcity.telegram-plugin.plugin.vendorUrl>https://github.com/ItgLvb/teamcity-telegram-plugin</teamcity.telegram-plugin.plugin.vendorUrl>
+      <teamcity.telegram-plugin.plugin.vendorName>rtviwe</teamcity.telegram-plugin.plugin.vendorName>
+      <teamcity.telegram-plugin.plugin.vendorUrl>https://github.com/rtviwe/teamcity-telegram-plugin</teamcity.telegram-plugin.plugin.vendorUrl>
   </properties>
   <dependencies>
       <dependency>
@@ -74,36 +74,6 @@
                 </configuration>
               </execution>
             </executions>
-        </plugin>
-        <plugin>
-            <groupId>de.jutzig</groupId>
-            <artifactId>github-release-plugin</artifactId>
-            <version>1.1.1</version>
-            <configuration>
-                <description>Description of your release</description>
-                <releaseName>v1.3</releaseName>
-                <tag>${project.version}</tag>
-                <servers>
-                    <server>
-                        <id>github</id>
-                        <username>GITHUB_USERNAME</username>
-                        <password>GITHUB_PASSWORD</password>
-                    </server>
-                </servers>
-                <repositoryId></repositoryId>
-                <!-- If your project has additional artifacts, such as ones produced by
-                     the maven-assembly-plugin, you can define the following
-                     (requires version 1.1.1 of the plugin or higher): -->
-                <fileSets>
-                    <fileSet>
-                        <directory>${project.build.directory}</directory>
-                        <includes>
-                            <include>${project.artifactId}*.tar.gz</include>
-                            <include>${project.artifactId}*.zip</include>
-                        </includes>
-                    </fileSet>
-                </fileSets>
-            </configuration>
         </plugin>
     </plugins>
   </build>

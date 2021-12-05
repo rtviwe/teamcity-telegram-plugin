@@ -136,7 +136,7 @@ public class TelegramSettingsBean extends RememberState {
     settings.setUseProxy(useProxy);
     settings.setProxyType(Proxy.Type.valueOf(proxyType));
     settings.setProxyServer(proxyServer);
-    settings.setProxyPort(StringUtil.isEmpty(proxyPort) ? null : Integer.valueOf(proxyPort));
+    settings.setProxyPort(null);
     settings.setProxyUsername(proxyUsername);
     settings.setProxyPassword(proxyPassword);
     return settings;
